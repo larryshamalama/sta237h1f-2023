@@ -1,0 +1,98 @@
+---
+title: "tutorial2"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Question 1
+
+## (a)
+
+We let $X$ be the number of interviews to accept 10 students; convince yourselves that $X \sim \operatorname{NBinom}(10, 0.15)$. We are interested in
+\begin{align}
+  P(X \leq 100) &= \sum_{x = 10}^{100} \binom{x - 1}{10 - 1} 0.15^{10}(1 - 0.15)^{x - 10}\\
+  &= \sum_{x = 10}^{100} \binom{x - 1}{9} 0.15^{10}0.85^{x - 10} \, .
+\end{align}
+We can compute efficiently using R:
+
+```{r}
+pnbinom(100 - 10, 10, 0.15)
+```
+
+## (b)
+
+Thankfully, the formula is given: $\mathbb{E}(X) = \frac{r}{p}$. As such:
+\begin{align*}
+  \mathbb{E}(X) = \frac{r}{p} = \frac{100}{0.15} \approx 66.7
+\end{align*}
+
+## (c)
+
+Similarly to *(b)*:
+\begin{align*}
+  \operatorname{SD}(X) &= \sqrt{\operatorname{Var}(X)}\\
+  &= \sqrt{
+    \frac{r(1-p)}{p^2}
+  }\\
+  &= \sqrt{
+    \frac{10(1-0.15)}{0.15^2}
+  }\\
+  &\approx 19.43 \text{ applicants.}
+\end{align*}
+
+# Question 2
+
+## (a)
+
+Here, observe that $X \in \{-39 \, 600, -9\,600, 400\}$ is discrete. To find the MGF, we can do:
+
+\begin{align*}
+  M_X(t) &= \mathbb{E}\left(e^{tX}\right)\\
+  &= \sum_{x \in \{-39 \, 600, -9\,600, 400\}} e^{tx} P(X = x)\\
+  &= e^{-39\,600t}\frac{1}{5000} + e^{-9\,600t}\frac{1}{1000} + e^{400t}\frac{4994}{5000} \, .
+\end{align*}
+
+Recall that $\mathbb{E}(X) = \frac{d}{dt} M_X(t)\bigg|_{t=0} = M_X'(0)$:
+\begin{align*}
+  \frac{d}{dt} M_X(t) &= e^{-39\,600t}\frac{-39\,600}{5000} + e^{-9\,600t}\frac{-9\,600}{1000} + e^{400t}\frac{4994\cdot 400}{5000}\\
+  \Rightarrow \mathbb{E}(X) &= \frac{d}{dt} M_X(t)\bigg|_{t=0}\\
+  &= \frac{-39\,600}{5000} + \frac{-9\,600}{1000} + \frac{4994\cdot 400}{5000}\\
+  &= 382 \,.
+\end{align*}
+
+```{r}
+first_moment <- - 39600/5000 - 9600/1000 + 4994*400/5000
+first_moment
+```
+
+For the $\operatorname{SD}(X)$, we need $\mathbb{E}(X^2)$ since:
+\begin{align*}
+  \operatorname{SD}(X) = \sqrt{\mathbb{E}(X^2) - \mathbb{E}(X)^2} \, .
+\end{align*}
+
+We already have the expression of $M_X'(t)$ from the derivation above, so let's derive it again to find $\mathbb{E}(X^2) = \frac{d^2}{dt^2} M_X(t)\bigg|_{t=0}$:
+\begin{align*}
+  \frac{d^2}{dt^2} M_X(t) &= \frac{d}{dt}\left(e^{-39\,600t}\frac{-39\,600}{5000} + e^{-9\,600t}\frac{-9\,600}{1000} + e^{400t}\frac{4994\cdot 400}{5000}\right)\\
+  &= e^{-39\,600t}\frac{(-39\,600)^2}{5000} + e^{-9\,600t}\frac{(-9\,600)^2}{1000} + e^{400t}\frac{4994\cdot 400^2}{5000}\\
+  \Rightarrow \mathbb{E}(X^2) &= \frac{(-39\,600)^2}{5000} + \frac{(-9\,600)^2}{1000} + \frac{4994\cdot 400^2}{5000}\\
+  &= 565600\\
+  \Rightarrow \operatorname{SD}(X) &= \sqrt{\mathbb{E}(X^2) - \mathbb{E}(X)^2} \\
+  &= \sqrt{565600 - 382^2}\\
+  &\approx 647.82 \, .
+\end{align*}
+
+```{r}
+second_moment <- (-39600)^2/5000 + (-9600)^2/1000 + 4994*400^2/5000
+sqrt(second_moment - first_moment^2) # sd
+```
+
+## (b)
+
+```{r}
+sim <- sample(c(-39600, -9600, 400), size=1000, replace=TRUE, prob=c(1/5000, 1/1000, 4994/5000)) # i.
+mean(sim) # ii.
+sd(sim) # iii.
+```
