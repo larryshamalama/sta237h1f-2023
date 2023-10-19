@@ -1,0 +1,110 @@
+---
+title: "tutorial3"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Question 1
+
+## (a)
+
+\begin{align*}
+  F_X(x) &= \int_{-\infty}^x f_X(t) dt\\
+  &= \int_{0}^x 2 e^{-2t} dt\\
+  &= - e^{-2t} \,\Big\vert_0^x\\
+  &= 1 - e^{-2x} \,.
+\end{align*}
+
+Notice that I use $t$ as the dummy variable inside the integral because $x$ is used as the upper limit in the definite integral.
+
+## (b)
+
+\begin{align*}
+  \mathbb{E}(X) &= \int_{-\infty}^{\infty} xf_X(x) dx\\
+  &= \int_{0}^{\infty}x f_X(x) dx\\
+  &= \int_0^\infty \underbrace{x}_{u} \underbrace{e^{-2x} dx}_{dv}\qquad \text{integration by parts}\\
+  &= -x e^{-2x} \,\Big\vert_0^\infty - \int_0^\infty - e^{-2x} dx\\
+  &= - \frac{1}{2} e^{-2x} \,\Big\vert_0^\infty\\
+  &= - \frac{1}{2} \, .
+\end{align*}
+
+Note: $-x e^{-2x} \,\Big\vert_0^\infty$ evaluates to 0, where l'Hopital's rule is used implicitly:
+
+\begin{align*}
+  & \, \,\lim_{c \rightarrow \infty} x e^{-2x}\\
+  &= \lim_{c \rightarrow \infty} \frac{x}{e^{2x}} \text{ indeterminate form of a quotient of the form} \frac{\infty}{\infty}\\
+  &= \lim_{c \rightarrow \infty} \frac{1}{2e^{2x}}\\
+  &= 0 \,.
+\end{align*}
+
+## (c)
+
+```{r}
+set.seed(123)
+u <- runif(10000, 0, 1)
+x <- -0.5*log(1 - u)
+
+hist(x, breaks=30)
+```
+
+To verify that our samples in the vector `x` are indeed drawn from $f_X(x)$, we can plot the latter distribution over the histogram. Note: notice the `prob=TRUE` argument in hist that renders turns the histogram into an approximate density.
+
+```{r}
+pdf <- function(z){
+  return (2*exp(-2*z))
+}
+
+z <- seq(0, 3, by=0.001)
+
+hist(x, breaks=30, prob=TRUE)
+lines(z, pdf(z))
+```
+
+## (d)
+
+```{r}
+mean(x)
+```
+
+The above is close to 0.5, evaluated in (b). Looks good to me!
+
+# Question 2
+
+## (a)
+
+Solve for $\int_0^2 f_Y(y) dy = 1$:
+\begin{align*}
+  &\,\,\int_0^2 f_Y(y) dy\\
+  &= \int_0^2 c(2 - y) dy\\
+  &= c\left(2y - \frac{y^2}{2} \right)\, \Bigg\vert^2_0\\
+  &= 2c \, ,
+\end{align*}
+which implies that $c = \frac{1}{2}$.
+
+## (b)
+
+Using evidence from part **(a)** above, $\int f_Y(y) dy = y - \frac{y^2}{4}$. Now, we add the appropriate intervals for $y$ since $F_Y(y)$ needs to be written as a piecewise function.
+
+\begin{align*}
+  F_y(y) = \begin{cases}
+    0 &\qquad \text{if } y < 0\\
+    y - \frac{y^2}{4} &\qquad \text{if } 0 \leq y \leq 2\\
+    1 &\qquad \text{if } y > 2 \, .
+  \end{cases}
+\end{align*}
+
+## (c)
+
+Notice that $P(1 < Y \leq 2) = P(Y \leq 2) - P(Y \leq 1) = 1 - P(Y \leq 1)$. Since we have the CDF from part **(b)**, we have that:
+\begin{align*}
+  P(1 < Y \leq 2) = 1 - P(Y \leq 1) = 1 - \left(1 - \frac{1}{4}\right) = \frac{1}{4} \, .
+\end{align*}
+
+## (d)
+
+I'm teaching my 9am tutorial; this will be typed up asap...
+
+## (e)
