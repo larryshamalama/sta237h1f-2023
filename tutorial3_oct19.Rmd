@@ -105,6 +105,24 @@ Notice that $P(1 < Y \leq 2) = P(Y \leq 2) - P(Y \leq 1) = 1 - P(Y \leq 1)$. Sin
 
 ## (d)
 
-I'm teaching my 9am tutorial; this will be typed up asap...
+\begin{align*}
+  \mathbb{E}(Y) &= \int_0^2 y \frac{1}{2}(2 - y) dy\\
+  &= \frac{1}{2} \int_0^2 (2y - y^2) dy\\
+  &= \frac{1}{2} \left(y^2 - \frac{y^3}{3}\right) \, \Bigg\vert^2_0\\
+  &= \frac{2}{3}
+\end{align*}
 
 ## (e)
+
+\begin{align*}
+  \mathbb{E}\left(Y^2\right) &= \int_0^2 y^2 \frac{1}{2}(2 - y) dy\\
+  &= \frac{1}{2} \int_0^2 (2y^2 - y^3) dy\\
+  &= \frac{1}{2} \left(\frac{2y^3}{3} - \frac{y^4}{4}\right) \, \Bigg\vert^2_0\\
+  &= \frac{2}{3}
+\end{align*}
+
+We can find the variance by using the first and second moments:
+
+\begin{align*}
+  \operatorname{Var}(Y) = \frac{2}{3} - \left(\frac{2}{3}\right)^2 = \frac{2}{9}
+\end{align*}
