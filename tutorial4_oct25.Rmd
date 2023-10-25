@@ -1,0 +1,42 @@
+---
+title: "tutorial4"
+output: html_notebook
+---
+
+# Question 1
+
+## (a)
+
+When $\alpha = \beta = 1$, we have that $f(x) = \frac{1}{x^2}$.
+
+\begin{align*}
+  \mathbb{E}(X) = \int_1^\infty x f(x) dx = \int_1^\infty x \frac{1}{x^2} dx = \int_1^\infty \frac{1}{x} dx = \ln(\infty) - \ln(1) = \infty
+\end{align*}
+
+## (b)
+
+Let $q_p$ be the $p$th quantile value. As such, $q_p$ is defined with respect to the following equation:
+\begin{align*}
+  p = \int_1^{q_p} f(x) dx = \int_1^{q_p} \frac{1}{x^2} dx = - \frac{1}{x} \, \Bigg\vert^{q_p}_0 = 1 - \frac{1}{q_p} \, .
+\end{align*}
+Solving $p = 1 - \frac{1}{q_p}$ yields $q_p = \frac{1}{1 - p}$. The 50th, 75th, 90th, 95th, 99th quantiles of a $\operatorname{Pareto}(1, 1)$ are as follows:
+\begin{itemize}
+  \item $q_{0.5} = \frac{1}{1 - \frac{1}{2}} = 2$
+  \item $q_{0.75} = \frac{1}{1 - \frac{3}{4}} = 4$
+  \item $q_{0.9} = \frac{1}{1 - \frac{9}{10}} = 10$
+  \item $q_{0.95} = \frac{1}{1 - \frac{19}{20}} = 20$
+  \item $q_{0.99} = \frac{1}{1 - \frac{99}{100}} = 100$
+\end{itemize}
+
+## (c)
+
+```{r}
+library(EnvStats)
+
+x <- rpareto(n=100, shape=0.5, location=1)
+
+mean(x)
+var(x)
+```
+
+Both the theoretical mean and variance values are infinity, so I'm not sure how we can achieve a "good approximation of theoretical [values]".
