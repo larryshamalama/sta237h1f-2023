@@ -1,0 +1,57 @@
+---
+title: "tutorial6_nov22"
+output: html_document
+date: "2023-11-22"
+---
+
+# Question 1
+
+### (a)
+
+```{r}
+factorial(40)/(factorial(15)*factorial(15)*factorial(5)*factorial(5)) * 0.46^15 * 0.42^15 * 0.09^5 * 0.03^5 # by hand
+
+dmultinom(c(15, 15, 5, 5), 40, prob=c(0.46, 0.42, 0.09, 0.03))
+```
+
+### (b)
+
+```{r}
+factorial(40)/(factorial(20)*factorial(20)*factorial(0)*factorial(0)) * 0.46^20 * 0.42^20 * 0.09^0 * 0.03^0 # by hand
+
+dmultinom(c(20, 20, 0, 0), 40, prob=c(0.46, 0.42, 0.09, 0.03))
+```
+
+### (c)
+
+```{r}
+1 - dbinom(0., 40, 0.03) - dbinom(1, 40, 0.03) - dbinom(2, 40, 0.03)
+
+pbinom(2, 40, 0.03, lower.tail = FALSE)
+
+1 - pbinom(2, 40, 0.03)
+```
+
+### (d)
+
+```{r}
+rmultinom(1, 40, c(0.46, 0.42, 0.09, 0.03))
+```
+
+# Question 2
+
+```{r}
+library(mvtnorm) # run install.packages("mvtnorm") if not installed
+```
+
+### (c)
+
+```{r}
+pmvnorm(upper=c(0.5, 0), mean=c(0, 0), corr=matrix(c(1, 0.7, 0.7, 1), nrow=2))
+```
+
+### (d)
+
+```{r}
+rmvnorm(10, mean=c(0, 0), sigma=matrix(c(1, 0, 0, 1), nrow=2))
+```
